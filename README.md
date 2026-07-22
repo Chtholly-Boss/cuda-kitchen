@@ -23,13 +23,15 @@ cp -r cuda_skill ../.claude/skills/sass
 
 Both scrapers are uv scripts — dependencies install automatically on first run.
 
-## Submodule Init
+## Submodule Setup
+
+After a fresh clone, run:
 
 ```bash
-git clone --recurse-submodules <repo>
-# or, after a plain clone:
-git submodule update --init --recursive
+./scripts/setup-submodule.sh
 ```
+
+Populates `ptx-isa-markdown/` (full) and `thirdparty/cutlass/include/` (sparse — `include/` only, via non-cone sparse checkout). CUTLASS is cloned shallow; see `.gitmodules`.
 
 ## References
 
@@ -45,7 +47,3 @@ Source documentation and supplementary references:
 - [CUDA Driver API 13.1](https://docs.nvidia.com/cuda/cuda-driver-api/) — source for Driver docs.
 - [CUDA Binary Utilities — Instruction Set Reference](https://docs.nvidia.com/cuda/cuda-binary-utilities/index.html#instruction-set-reference) — source for the `sass` skill.
 - [https://kuterdinel.com/nv_isa/](https://kuterdinel.com/nv_isa/) — community SASS instruction reference, useful for opcode details beyond the official table.
-
-## License
-
-Documentation © NVIDIA Corporation. Conversions are unofficial; refer to NVIDIA's official docs for authoritative reference.
