@@ -19,6 +19,7 @@ Options:
                      If omitted, detect from nvcc, then nvidia-smi.
   --arch <sm_xx>     CUDA GPU architecture, for example sm_90 or sm_103.
                      If omitted, detect first GPU via nvidia-smi.
+  --skip-cuda        Do not install runtime headers under thirdparty/cuda-runtime.
   --skip-cutlass     Do not clone/update thirdparty/cutlass.
   --skip-clangd      Do not write .clangd.
   -h, --help         Show this help.
@@ -44,6 +45,8 @@ cd "$ROOT"
 
 CUDA_VERSION=""
 ARCH=""
+INSTALL_CUDA=1
+SKIPPED_CUDA_INSTALL=0
 INSTALL_CUTLASS=1
 WRITE_CLANGD=1
 
@@ -61,6 +64,10 @@ while [ "$#" -gt 0 ]; do
             ;;
         --skip-cutlass)
             INSTALL_CUTLASS=0
+            shift
+            ;;
+        --skip-cuda)
+            INSTALL_CUDA=0
             shift
             ;;
         --skip-clangd)
@@ -279,7 +286,16 @@ fi
 ARCH_SM="${BASH_REMATCH[1]}"
 CUDA_ARCH_VAL="${ARCH_SM}0"
 CUDA_FEATURE_TAG="CUDA_${CUDA_MAJOR}_${CUDA_MINOR}_SM${ARCH_SM}_FEATURES_SUPPORTED"
-CUDA_ROOT="$(detect_cuda_path || install_cuda_runtime_headers)"
+
+if CUDA_ROOT="$(detect_cuda_path)"; then
+    :
+elif [ "$INSTALL_CUDA" -eq 1 ]; then
+    CUDA_ROOT="$(install_cuda_runtime_headers)"
+else
+    CUDA_ROOT="/usr/local/cuda"
+    SKIPPED_CUDA_INSTALL=1
+fi
+
 CUDA_INCLUDE="$CUDA_ROOT/include"
 CUDA_CCCL_INCLUDE="$CUDA_INCLUDE/cccl"
 
@@ -287,7 +303,9 @@ echo "Using CUDA version: ${CUDA_MAJOR}.${CUDA_MINOR}"
 echo "Using CUDA arch: ${ARCH} (__CUDA_ARCH__=${CUDA_ARCH_VAL})"
 echo "Using CUDA path: $CUDA_ROOT"
 
-if [ ! -d "$CUDA_INCLUDE" ]; then
+if [ ! -d "$CUDA_INCLUDE" ] && [ "$SKIPPED_CUDA_INSTALL" -eq 1 ]; then
+    warn "CUDA include directory not found: $CUDA_INCLUDE (--skip-cuda set, not installing runtime headers)"
+elif [ ! -d "$CUDA_INCLUDE" ]; then
     warn "CUDA include directory not found: $CUDA_INCLUDE"
 fi
 

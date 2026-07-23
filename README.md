@@ -49,7 +49,8 @@ Unix-style paths directly.
 If no CUDA toolkit include directory is found, `setup.sh` installs the runtime
 headers into `thirdparty/cuda-runtime` with `python3 -m pip` and points
 `thirdparty/cuda` at the installed include parent. The package is selected for
-the requested CUDA major/minor version.
+the requested CUDA major/minor version. Pass `--skip-cuda` to skip this
+project-local CUDA runtime header fallback.
 
 ## References
 
