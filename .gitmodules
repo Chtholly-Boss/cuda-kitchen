@@ -1,7 +1,3 @@
 [submodule "ptx-isa-markdown"]
 	path = ptx-isa-markdown
 	url = https://github.com/technillogue/ptx-isa-markdown.git
-[submodule "cutlass"]
-	path = thirdparty/cutlass
-	url = https://github.com/NVIDIA/cutlass.git
-	shallow = true

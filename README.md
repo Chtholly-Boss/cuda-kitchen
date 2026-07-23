@@ -31,7 +31,7 @@ After a fresh clone, run:
 ./scripts/setup-submodule.sh
 ```
 
-Populates `ptx-isa-markdown/` (full) and `thirdparty/cutlass/include/` (sparse — `include/` only, via non-cone sparse checkout). CUTLASS is cloned shallow; see `.gitmodules`.
+Populates `thirdparty/cutlass/include/` only, using a shallow sparse checkout of CUTLASS. `ptx-isa-markdown/` remains a submodule but is not initialized by this script.
 
 ## References
 
