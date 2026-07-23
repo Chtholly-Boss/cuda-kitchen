@@ -1,6 +1,7 @@
 CompileFlags:
   Add:
     - -I__REPO_ROOT__/thirdparty/cutlass/include/
+    - -I__REPO_ROOT__/thirdparty/cuda/include/
     - "-ferror-limit=0"
 Hover:
   ShowAKA: No
@@ -16,17 +17,17 @@ If:
   PathMatch: [.*\.cu, .*\.cuh]
 CompileFlags:
   Add:
-    - --cuda-path=/usr/local/cuda
-    - -I/usr/local/cuda/include      # cuda12
-    - -I/usr/local/cuda/include/cccl # cuda13
-    - --cuda-gpu-arch=sm___CUDA_ARCH_SM__
+    - --cuda-path=__CUDA_PATH__
+    - -I__CUDA_INCLUDE__
+    - -I__CUDA_CCCL_INCLUDE__
+    - --cuda-gpu-arch=__CUDA_GPU_ARCH__
     - "-xcuda"
     - --std=c++20
     - "-D__INTELLISENSE__"
     - "-D__CLANGD__"
-    - "-DCUDA_12_0_SM__CUDA_ARCH_SM___FEATURES_SUPPORTED"
+    - "-D__CUDA_FEATURE_TAG__"
     - "-DCUTLASS_ARCH_MMA_SM__CUDA_ARCH_SM___SUPPORTED=1"
-    - "-D_LIBCUDACXX_STD_VER=__CUDA_MAJOR__"
+    - "-D_LIBCUDACXX_STD_VER=20"
     - "-D__CUDACC_VER_MAJOR__=__CUDA_MAJOR__"
     - "-D__CUDACC_VER_MINOR__=__CUDA_MINOR__"
     - "-D__CUDA_ARCH__=__CUDA_ARCH_VAL__"
